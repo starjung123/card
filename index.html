@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>뉴스 카드 웹앱</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #news-app {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-card {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #fff;
+            transition: transform 0.2s;
+        }
+
+        .news-card:hover {
+            transform: scale(1.05);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>뉴스 카드 웹앱</h1>
+    </header>
+
+    <div id="news-app"></div>
+
+    <script>
+        const apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.google.com/alerts/feeds/03484194790601026653/16909715152384596793';
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                displayNewsCards(data.items);
+            })
+            .catch(error => {
+                console.error('뉴스 정보를 불러오는 중 오류가 발생했습니다.', error);
+            });
+
+        function displayNewsCards(newsItems) {
+            const newsApp = document.getElementById('news-app');
+
+            newsItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'news-card';
+
+                const title = document.createElement('h2');
+                title.textContent = item.title;
+
+                const description = document.createElement('p');
+                description.textContent = item.description;
+
+                const link = document.createElement('a');
+                link.href = item.link;
+                link.textContent = '자세히 보기';
+
+                card.appendChild(title);
+                card.appendChild(description);
+                card.appendChild(link);
+
+                newsApp.appendChild(card);
+            });
+        }
+    </script>
+
+</body>
+</html>
